@@ -1,0 +1,40 @@
+services:
+  app:
+    build: .
+    container_name: app
+    depends_on:
+      - db
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    restart: always
+    networks:
+      - private
+
+  db:
+    image: mysql:8
+    container_name: db
+    environment:
+      MYSQL_ROOT_PASSWORD: Vishal@07
+      MYSQL_DATABASE: crud_db
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - private
+
+  nginx:
+    image: nginx:alpine
+    container_name: proxy
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+    networks:
+      - private
+
+networks:
+  private:
+
+volumes:
+  db_data:
