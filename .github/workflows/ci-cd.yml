@@ -17,8 +17,21 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
+      - name: Give execute permission
+        run: chmod +x mvnw
+
       - name: Build JAR
         run: ./mvnw clean package -DskipTests
 
       - name: Build Docker Image
         run: docker build -t secure-crud-devops-app .
+
+      # 🔐 DockerHub Login
+      - name: Login to DockerHub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+
+      # 🚀 Push Image
+      - name: Push Image
+        run: |
+          docker tag secure-crud-devops-app yourname/secure-crud-devops
+          docker push yourname/secure-crud-devops
