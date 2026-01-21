@@ -34,4 +34,4 @@ jobs:
       - name: Push Image
         run: |
           docker tag secure-crud-devops-app yourname/secure-crud-devops
-          docker push yourname/secure-crud-devops
+          docker push vishal707/secure-crud-devops
